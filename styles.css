@@ -67,7 +67,7 @@ input[type="number"]:focus, input[type="text"]:focus, select:focus {
 }
 
 button {
-    padding: 15px 30px;
+    padding: 10px 30px;
     background-color: #e67e22;
     color: #fff;
     border: none;
