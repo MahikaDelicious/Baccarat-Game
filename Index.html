@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baccarat Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <br><br>
+    <div class="container">
+        <h1>Baccarat Game</h1>
+        <div class="flex-container">
+            <div id="game">
+                <h2>Set Number of Bettors</h2>
+                <input type="number" id="numBettors" min="1" max="10" value="2" aria-label="Number of Bettors">
+                <button id="setBettors">Set Bettors</button>
+                <h2>Place Your Bets</h2>
+                <div id="bettors-container"></div>
+                <button id="deal" disabled>Deal</button>
+            </div>
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
