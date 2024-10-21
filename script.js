@@ -6,19 +6,30 @@ setBettorsButton.addEventListener('click', () => {
     const numberOfBettors = parseInt(document.getElementById('numBettors').value) || 2;
     bettorsContainer.innerHTML = ''; // Clear existing bettors
     for (let i = 1; i <= numberOfBettors; i++) {
-        const bettorDiv = document.createElement('div');
-        bettorDiv.innerHTML = `
-            Bettor ${i} Name: <input type="text" class="bettor-name" placeholder="Enter name" aria-label="Bettor ${i}'s name">
-            <select class="bet" data-bettor="${i}" aria-label="Bettor ${i}'s bet">
-                <option value="player">Player</option>
-                <option value="banker">Banker</option>
-                <option value="tie">Tie</option>
-            </select>
-        `;
-        bettorsContainer.appendChild(bettorDiv);
+        addBettor(i);
     }
     dealButton.disabled = false; // Enable deal button
 });
+
+function addBettor(index) {
+    const bettorDiv = document.createElement('div');
+    bettorDiv.classList.add('bettor');
+    bettorDiv.innerHTML = `
+        Bettor ${index} Name: <input type="text" class="bettor-name" placeholder="Enter name" aria-label="Bettor ${index}'s name">
+        <select class="bet" data-bettor="${index}" aria-label="Bettor ${index}'s bet">
+            <option value="player">Player</option>
+            <option value="banker">Banker</option>
+            <option value="tie">Tie</option>
+        </select>
+        <button class="remove-bettor">Remove</button>
+    `;
+    bettorsContainer.appendChild(bettorDiv);
+
+    // Add event listener for remove button
+    bettorDiv.querySelector('.remove-bettor').addEventListener('click', () => {
+        bettorsContainer.removeChild(bettorDiv);
+    });
+}
 
 // Card game logic remains unchanged
 const cardValues = {
@@ -36,6 +47,15 @@ function drawCard(deck) {
 }
 
 dealButton.addEventListener('click', () => {
+    // Validation: Check if all bettors have a name
+    const names = Array.from(document.querySelectorAll('.bettor-name')).map(input => input.value.trim());
+    for (const name of names) {
+        if (name === '') {
+            alert('Please enter a name for all bettors.');
+            return; // Stop further execution if a name is missing
+        }
+    }
+
     const deck = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
     let playerHand = [drawCard(deck), drawCard(deck)];
     let bankerHand = [drawCard(deck), drawCard(deck)];
@@ -56,7 +76,6 @@ dealButton.addEventListener('click', () => {
 
     const results = [];
     const bets = Array.from(document.querySelectorAll('.bet')).map(select => select.value);
-    const names = Array.from(document.querySelectorAll('.bettor-name')).map(input => input.value || `Bettor ${input.dataset.bettor}`); // Default name if empty
 
     bets.forEach((bet, index) => {
         results.push(bet === winner.toLowerCase() ? `${names[index]} wins!` : `${names[index]} loses.`);
